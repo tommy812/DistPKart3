@@ -5,6 +5,12 @@ package Server.Packets;
 //  Sid: 1955004
 //
 ///////////////////////////////////////////
+//
+//  Packet design reference:
+//  https://www.youtube.com/watch?v=l1p21JWa_8s&list=PLvPPkch7E3t3GtccgGhFgtRxp6dyIAWvx&index=2
+//  https://github.com/vanZeben
+//
+///////////////////////////////////////////
 import Server.GameClient;
 import Server.GameServer;
 

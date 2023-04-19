@@ -412,4 +412,7 @@ public class Car {
         this.lap = lap;
     }
 
+    public void setCheckpoint(int checkPoint) {
+        this.checkPoint = checkPoint;
+    }
 }

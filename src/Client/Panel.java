@@ -466,6 +466,9 @@ public class Panel extends JPanel implements KeyListener {
                 redCar.setReady(false);
                 blueCar.setReady(false);
                 match.setStarted(false);
+
+                redCar.setCheckpoint(0);
+                blueCar.setCheckpoint(0);
                 break;
             case JOptionPane.NO_OPTION:
                 //disconnect user from the server
