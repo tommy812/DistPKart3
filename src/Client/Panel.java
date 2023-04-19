@@ -44,9 +44,13 @@ public class Panel extends JPanel implements KeyListener {
     }
 
     public JFrame frame;
-    public Panel(){
+    public Panel(String ipAddress){
         setDoubleBuffered(true);
         addKeyListener(this);
+        init(ipAddress);
+
+    }
+    private synchronized void init(String ipAddress){
         match.setLaps(nLaps);
         if(JOptionPane.showConfirmDialog(this, "Do you want to run the server?")== 0){
             socketServer = new GameServer(this);
@@ -54,7 +58,7 @@ public class Panel extends JPanel implements KeyListener {
 
         }
 
-        socketClient = new GameClient("localhost",this);
+        socketClient = new GameClient(ipAddress,this);
         socketClient.start();
 
         Packet00Login loginPacket = new Packet00Login(blueCar.getpNum(),blueCar.getPositionX(),blueCar.getPositionY());
@@ -66,13 +70,12 @@ public class Panel extends JPanel implements KeyListener {
         }
 
         loginPacket.writeData(socketClient);
-
     }
 
     private void update() {
     }
 
-    public void sendUpdate(){
+    public synchronized void sendUpdate(){
         if (pNum == 1) {
             Packet02Move packet = new Packet02Move(redCar.getpNum(), redCar.getPositionX(), redCar.getPositionY(), redCar.getDirection(), redCar.getSpeed(), redCar.getAlert(), redCar.getStatus(), redCar.isReady());
             packet.writeData(socketClient);
@@ -340,64 +343,65 @@ public class Panel extends JPanel implements KeyListener {
 
                 System.out.println("game reset");
 
-            }else if (pNum == 2) {
-                if (e.getKeyChar() == 'w') {
-                    //System.out.println("key is up");
-                    if (blueCar.getSpeed() < Car.MAX_SPEED) {
-                        blueCar.increaseSpeed();
-                    }
-                    System.out.println("blue car speed: " + blueCar.getSpeed());
+            }
+        }else if (pNum == 2) {
+            if (e.getKeyChar() == 'w') {
+                //System.out.println("key is up");
+                if (blueCar.getSpeed() < Car.MAX_SPEED) {
+                    blueCar.increaseSpeed();
+                }
+                System.out.println("blue car speed: " + blueCar.getSpeed());
 
-                } else if (e.getKeyChar() == 'd') {
-                    //System.out.println("key is right");
-                    if (blueCar.getDirection() == 15) {
-                        blueCar.setDirection(0);
-                    } else {
-                        blueCar.setDirection(blueCar.getDirection() + 1);
-
-                    }
-                } else if (e.getKeyChar() == 'a') {
-                    //System.out.println("key is left");
-                    if (blueCar.getDirection() == 0) {
-                        blueCar.setDirection(15);
-                    } else {
-                        blueCar.setDirection(blueCar.getDirection() - 1);
-                    }
-                } else if (e.getKeyChar() == 's') {
-                    //System.out.println("key is down");
-                    if (blueCar.getSpeed() > Car.MIN_SPEED - 10) {
-                        blueCar.decreaseSpeed();
-                    }
-                    //System.out.println("blue car speed: " + blueCar.getSpeed());
-
-                } else if (e.getKeyChar() == 'r') {
-                    //System.out.println("key is down");
-                    redCar.setSpeed(0);
-                    redCar.setPositionX(580);
-                    redCar.setPositionY(550);
-                    redCar.setLap(0);
-                    redCar.setAlert("");
-                    redCar.setDirection(RIGHT);
-                    redCar.setStatus("Press 'Z' to start.");
-                    blueCar.setSpeed(0);
-                    blueCar.setPositionX(575);
-                    blueCar.setPositionY(500);
-                    blueCar.setLap(0);
-                    blueCar.setAlert("");
-                    blueCar.setDirection(RIGHT);
-                    blueCar.setStatus("Press 'm' to start.");
-
-                    match.setFinished(false);
-                    match.setWinner(0);
-                    match.setP1Ready(false);
-                    match.setP2Ready(false);
-                    match.setStarted(false);
-                    sendUpdate();
-
-                    System.out.println("game reset");
+            } else if (e.getKeyChar() == 'd') {
+                //System.out.println("key is right");
+                if (blueCar.getDirection() == 15) {
+                    blueCar.setDirection(0);
+                } else {
+                    blueCar.setDirection(blueCar.getDirection() + 1);
 
                 }
+            } else if (e.getKeyChar() == 'a') {
+                //System.out.println("key is left");
+                if (blueCar.getDirection() == 0) {
+                    blueCar.setDirection(15);
+                } else {
+                    blueCar.setDirection(blueCar.getDirection() - 1);
+                }
+            } else if (e.getKeyChar() == 's') {
+                //System.out.println("key is down");
+                if (blueCar.getSpeed() > Car.MIN_SPEED - 10) {
+                    blueCar.decreaseSpeed();
+                }
+                //System.out.println("blue car speed: " + blueCar.getSpeed());
+
+            } else if (e.getKeyChar() == 'r') {
+                //System.out.println("key is down");
+                redCar.setSpeed(0);
+                redCar.setPositionX(580);
+                redCar.setPositionY(550);
+                redCar.setLap(0);
+                redCar.setAlert("");
+                redCar.setDirection(RIGHT);
+                redCar.setStatus("Press 'Z' to start.");
+                blueCar.setSpeed(0);
+                blueCar.setPositionX(575);
+                blueCar.setPositionY(500);
+                blueCar.setLap(0);
+                blueCar.setAlert("");
+                blueCar.setDirection(RIGHT);
+                blueCar.setStatus("Press 'm' to start.");
+
+                match.setFinished(false);
+                match.setWinner(0);
+                match.setP1Ready(false);
+                match.setP2Ready(false);
+                match.setStarted(false);
+                sendUpdate();
+//TODO maybe eliminare i troppi send update
+                System.out.println("game reset");
+
             }
+
         }
     }
 
@@ -497,7 +501,7 @@ public class Panel extends JPanel implements KeyListener {
     }
 
     private class TimeHandler implements ActionListener {
-        public void actionPerformed(ActionEvent actionEvent) {
+        public synchronized void actionPerformed(ActionEvent actionEvent) {
             //update();
             playSounds();
             remove(redLabel);

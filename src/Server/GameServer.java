@@ -151,6 +151,7 @@ public class GameServer extends Thread  {
         }
         return index;
     }
+
     public void sendData (byte[] data, InetAddress ipAddress, int port){
         DatagramPacket packet = new DatagramPacket(data, data.length, ipAddress, port);
         try {

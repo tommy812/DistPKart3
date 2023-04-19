@@ -62,6 +62,7 @@ public class GameClient extends Thread{
             case MOVE:
                 packet = new Packet02Move(data);
                 handleMove((Packet02Move) packet);
+                System.out.println("Player: "+ ((Packet02Move)packet).getpNum()+" sent "+(Packet02Move) packet);
         }
     }
     public void sendData (byte[] data){
