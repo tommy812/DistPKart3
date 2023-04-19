@@ -35,6 +35,7 @@ public class Car {
     private int checkPoint=0;
     private int[] checkPoints={1,2,3,4,5};
     private boolean isReady=false;
+    public boolean isPlayed=false;
 
 
 
@@ -262,6 +263,10 @@ public class Car {
             blueCar.setSpeed(blueCar.MIN_SPEED);
             redCar.setAlert("Game Over");
             blueCar.setAlert("Game Over");
+            if(!this.isPlayed) {
+                redCar.audioPlayer(1);
+                isPlayed = true;
+            }
         }
     }
 

@@ -21,15 +21,15 @@ import java.util.concurrent.TimeUnit;
 public class Panel extends JPanel implements KeyListener {
 
     //modify number of laps
-    private int nLaps;
+    private final int nLaps;
     private final static int RIGHT = 4;
     private final int fps=60;
-    private final String initLab = "<html>Press 'z' to set Ready. Press 'r' to request a restart. </html>";
+    private final String initLab = "<html>Press 'z' and 'm' to set Ready. Press 'r' to request a restart. </html>";
     private Rectangle grassField,outerEdge,gameField,cP1,cP2,cP3,cP4,cP5;
     Car redCar=new CarMP(1,null,-1);
     Car blueCar =new CarMP(2,null,-1);
-    JLabel redLabel = new JLabel("<html>Red Client.Car Lap: <br/> Red Client.Car Speed: <br/>Alert: ");
-    JLabel blueLabel = new JLabel("<html>Blue Client.Car Lap: <br/> Blue Client.Car Speed: <br/>Alert: ");
+    JLabel redLabel = new JLabel("<html>Red Car Lap: <br/> Red Car Speed: <br/>Alert: ");
+    JLabel blueLabel = new JLabel("<html>Blue Car Lap: <br/> Blue Car Speed: <br/>Alert: ");
     JLabel fpsLabel = new JLabel("FPS: ");
     JLabel controlsLabel = new JLabel(initLab);
     private boolean redPlayed, bluePlayed =false;
@@ -44,7 +44,6 @@ public class Panel extends JPanel implements KeyListener {
         return this.pNum;
     }
 
-    public JFrame frame;
     public Panel(String ipAddress,int nLaps){
         this.nLaps = nLaps;
         setDoubleBuffered(true);
@@ -378,36 +377,32 @@ public class Panel extends JPanel implements KeyListener {
     }
 
     public void playSounds(){
-        if(redCar.getAlert() == ("")){
+        if(redCar.getAlert().equals("")){
             redPlayed = false;
+            redCar.isPlayed = false;
         }
-        if(redCar.getAlert() == "Hit the wall." && !redPlayed){
+        if(redCar.getAlert().equals("Hit the wall.") && !redPlayed){
             redCar.audioPlayer(2);
             redPlayed=true;
-        } else if (redCar.getAlert() == "Hit the grass Field." && !redPlayed){
+        } else if (redCar.getAlert().equals("Hit the grass Field.") && !redPlayed){
             redCar.audioPlayer(2);
             redPlayed=true;
-        } else if (redCar.getAlert() == "Winner!" && !redPlayed) {
+        } else if (redCar.getAlert().equals("Winner!") && !redPlayed) {
             redCar.audioPlayer(4);
             redPlayed = true;
-        }else if (redCar.getAlert() == "Ready" && !redPlayed) {
-            redCar.audioPlayer(5);
-            redPlayed = true;
         }
-        if(blueCar.getAlert() == ("")){
+        if(blueCar.getAlert().equals("")){
             bluePlayed = false;
+            blueCar.isPlayed = false;
         }
-        if(blueCar.getAlert() == "Hit the wall." && !bluePlayed){
+        if(blueCar.getAlert().equals("Hit the wall.") && !bluePlayed){
             redCar.audioPlayer(2);
             bluePlayed=true;
-        } else if (blueCar.getAlert() == "Hit the grass Field." && !bluePlayed){
+        } else if (blueCar.getAlert().equals("Hit the grass Field.") && !bluePlayed){
             redCar.audioPlayer(2);
             bluePlayed=true;
-        } else if (blueCar.getAlert() == "Winner!" && !bluePlayed) {
+        } else if (blueCar.getAlert().equals("Winner!") && !bluePlayed) {
             redCar.audioPlayer(4);
-            bluePlayed = true;
-        }else if (blueCar.getAlert() == "Ready" && !bluePlayed) {
-            redCar.audioPlayer(5);
             bluePlayed = true;
         }
     }
@@ -466,6 +461,8 @@ public class Panel extends JPanel implements KeyListener {
                 redCar.setReady(false);
                 blueCar.setReady(false);
                 match.setStarted(false);
+                blueCar.isPlayed = false;
+                redCar.isPlayed = false;
 
                 redCar.setCheckpoint(0);
                 blueCar.setCheckpoint(0);
