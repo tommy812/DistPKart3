@@ -7,6 +7,7 @@ package Client;
 import Server.Packets.Packet00Login;
 import Server.GameClient;
 import Server.GameServer;
+import Server.Packets.Packet01Disconnect;
 import Server.Packets.Packet02Move;
 
 import javax.swing.*;
@@ -162,43 +163,42 @@ public class Panel extends JPanel implements KeyListener {
         g2.fillRect( 1050, 0, 200, 700 ); //80 height; right panel
         //g2.dispose();
 
-
-        //Player one menu
-        redLabel.setText("<html>Player: 1<br/>Red Car Lap: "+redCar.getLap()+"<br/> " +
-                "Red Car Speed: "+redCar.getSpeed()+" mph <br/>" +
-                "Status: "+ redCar.getAlert()+"<br/>" +
-                redCar.getStatus()+"<br/><br/>"+
-                "A: Left" +"<br/>" +
-                "D: Right" +"<br/>" +
-                "W: Speed Up" +"<br/>" +
-                "S: Speed Down" +"<br/>" +
-                "</html>");
-        redLabel.setVerticalTextPosition(SwingConstants.TOP);
-        redLabel.setForeground(Color.white);
-        redLabel.setVisible(true);
-        //blueLabel.setLocation(,0);
-        redLabel.setSize(200 , 400);
-        this.add(redLabel);
-
-
-
-        //player two menu
-        blueLabel.setText("<html>Player: 2<br/>Blue Car Lap: "+blueCar.getLap()+"<br/> " +
-                "Blue Car Speed: "+blueCar.getSpeed()+" mph <br/>" +
-                "Status: "+ blueCar.getAlert()+"<br/>" +
-                blueCar.getStatus()+"<br/><br/>"+
-                "&larr; :Left" +"<br/>" +
-                "&rarr; :Right" +"<br/>" +
-                "&uarr; :Speed Up" +"<br/>" +
-                "&darr; :Speed Down" +"<br/>" +
-                "</html>");
-        blueLabel.setVerticalTextPosition(SwingConstants.TOP);
-        blueLabel.setForeground(Color.white);
-        blueLabel.setVisible(true);
-        blueLabel.setLocation(1080,0);
-        blueLabel.setSize(170 , 400);
-        this.add(blueLabel);
-
+        if (pNum==1) {
+            //Player one menu
+            redLabel.setText("<html>Player: 1<br/>Red Car Lap: " + redCar.getLap() + "<br/> " +
+                    "Red Car Speed: " + redCar.getSpeed() + " mph <br/>" +
+                    "Status: " + redCar.getAlert() + "<br/>" +
+                    redCar.getStatus() + "<br/><br/>" +
+                    "A: Left" + "<br/>" +
+                    "D: Right" + "<br/>" +
+                    "W: Speed Up" + "<br/>" +
+                    "S: Speed Down" + "<br/>" +
+                    "</html>");
+            redLabel.setVerticalTextPosition(SwingConstants.TOP);
+            redLabel.setForeground(Color.white);
+            redLabel.setVisible(true);
+            //blueLabel.setLocation(,0);
+            redLabel.setLocation(0, 0);
+            redLabel.setSize(200, 400);
+            this.add(redLabel);
+        }else if (pNum == 2) {
+            //player two menu
+            blueLabel.setText("<html>Player: 2<br/>Blue Car Lap: " + blueCar.getLap() + "<br/> " +
+                    "Blue Car Speed: " + blueCar.getSpeed() + " mph <br/>" +
+                    "Status: " + blueCar.getAlert() + "<br/>" +
+                    blueCar.getStatus() + "<br/><br/>" +
+                    "A: Left" + "<br/>" +
+                    "D: Right" + "<br/>" +
+                    "W: Speed Up" + "<br/>" +
+                    "S: Speed Down" + "<br/>" +
+                    "</html>");
+            blueLabel.setVerticalTextPosition(SwingConstants.TOP);
+            blueLabel.setForeground(Color.white);
+            blueLabel.setVisible(true);
+            blueLabel.setLocation(1080, 0);
+            blueLabel.setSize(170, 400);
+            this.add(blueLabel);
+        }
         //fps Menu
         fpsLabel.setText("FPS: " +fps);
         fpsLabel.setLocation(0,610);
@@ -358,39 +358,13 @@ public class Panel extends JPanel implements KeyListener {
                     }
                     //System.out.println("blue car speed: " + blueCar.getSpeed());
 
+                } else if (e.getKeyChar() == 'r') {
+                    restart();
                 }
             }
         }
     }
 
-
-//            } else if (e.getKeyChar() == 'r') {
-//                //System.out.println("key is down");
-//                redCar.setSpeed(0);
-//                redCar.setPositionX(580);
-//                redCar.setPositionY(550);
-//                redCar.setLap(0);
-//                redCar.setAlert("");
-//                redCar.setDirection(RIGHT);
-//                redCar.setStatus("Press 'Z' to start.");
-//                blueCar.setSpeed(0);
-//                blueCar.setPositionX(575);
-//                blueCar.setPositionY(500);
-//                blueCar.setLap(0);
-//                blueCar.setAlert("");
-//                blueCar.setDirection(RIGHT);
-//                blueCar.setStatus("Press 'm' to start.");
-//
-//                match.setFinished(false);
-//                match.setWinner(0);
-//                match.setP1Ready(false);
-//                match.setP2Ready(false);
-//                match.setStarted(false);
-//                sendUpdate();
-////TODO maybe eliminare i troppi send update
-//                System.out.println("game reset");
-//
-//            }
 
 
 
@@ -465,6 +439,47 @@ public class Panel extends JPanel implements KeyListener {
 
     }
 
+    public void restart(){
+
+        int result=JOptionPane.showConfirmDialog(null, "<html>Player: "+match.getWinner()+" Wins! </br> Would you like to play again?</html>");
+        switch (result) {
+            case JOptionPane.YES_OPTION:
+                //reset all settings
+                redCar.setSpeed(0);
+                redCar.setPositionX(580);
+                redCar.setPositionY(550);
+                redCar.setLap(0);
+                redCar.setAlert("");
+                redCar.setDirection(RIGHT);
+                redCar.setStatus("Press 'Z' to start.");
+                blueCar.setSpeed(0);
+                blueCar.setPositionX(575);
+                blueCar.setPositionY(500);
+                blueCar.setLap(0);
+                blueCar.setAlert("");
+                blueCar.setDirection(RIGHT);
+                blueCar.setStatus("Press 'm' to start.");
+                match.setFinished(false);
+                match.setWinner(0);
+                match.setP1Ready(false);
+                match.setP2Ready(false);
+                redCar.setReady(false);
+                blueCar.setReady(false);
+                match.setStarted(false);
+                break;
+            case JOptionPane.NO_OPTION:
+                //disconnect user from the server
+                //close program.
+                Packet01Disconnect packet = new Packet01Disconnect(this.getpNum());
+                packet.writeData(this.socketClient);
+                System.exit(0);
+                break;
+            case JOptionPane.CLOSED_OPTION:
+                System.out.println("Closed");
+                break;
+        }
+    }
+
     public void moveCars(int pNum, int x, int y, int direction, int speed,String alert,String status,boolean isReady) {
         if (pNum == 1){
             this.redCar.setPositionX(x);
@@ -496,42 +511,7 @@ public class Panel extends JPanel implements KeyListener {
             remove(fpsLabel);
             sendUpdate();
             if(match.isFinished()) {
-                int result=JOptionPane.showConfirmDialog(null, "<html>Player: "+match.getWinner()+" Wins! </br> Would you like to play again?</html>");
-                switch (result) {
-                    case JOptionPane.YES_OPTION:
-                        //Close panel and restart
-                        redCar.setSpeed(0);
-                        redCar.setPositionX(580);
-                        redCar.setPositionY(550);
-                        redCar.setLap(0);
-                        redCar.setAlert("");
-                        redCar.setDirection(RIGHT);
-                        redCar.setStatus("Press 'Z' to start.");
-                        blueCar.setSpeed(0);
-                        blueCar.setPositionX(575);
-                        blueCar.setPositionY(500);
-                        blueCar.setLap(0);
-                        blueCar.setAlert("");
-                        blueCar.setDirection(RIGHT);
-                        blueCar.setStatus("Press 'm' to start.");
-
-                        match.setFinished(false);
-                        match.setWinner(0);
-                        match.setP1Ready(false);
-                        match.setP2Ready(false);
-                        match.setStarted(false);
-
-                        socketServer.stop();
-
-
-                        break;
-                    case JOptionPane.NO_OPTION:
-                        //close program.
-                        break;
-                    case JOptionPane.CLOSED_OPTION:
-                        System.out.println("Closed");
-                        break;
-                }
+                 restart();
             }
             //match.saveMatch();
 

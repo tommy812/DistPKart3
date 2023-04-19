@@ -9,12 +9,17 @@ import Server.Packets.Packet02Move;
 
 import java.io.IOException;
 import java.net.*;
+///////////////////////////////////////////
+//
+//  Sid: 1955004
+//
+///////////////////////////////////////////
 
 public class GameClient extends Thread{
 
     private InetAddress ipAddress;
     private DatagramSocket socket;
-    private Panel panel; // may be changed look what game is
+    private Panel panel;
 
     private int socket_port = 5000;
 

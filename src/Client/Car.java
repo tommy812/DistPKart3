@@ -4,12 +4,11 @@ package Client;///////////////////////////////////////////
 //
 ///////////////////////////////////////////
 
-import Server.Packets.Packet02Move;
 
 import javax.sound.sampled.*;
 import javax.swing.*;
 import java.awt.*;
-import Client.Panel;
+
 
 public class Car {
     //private attributes

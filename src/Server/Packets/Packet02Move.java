@@ -4,7 +4,11 @@ import Server.GameClient;
 import Server.GameServer;
 
 import static java.lang.Boolean.parseBoolean;
-
+///////////////////////////////////////////
+//
+//  Sid: 1955004
+//
+///////////////////////////////////////////
 public class Packet02Move extends Packet{
     private int pNum;
     private int x, y;

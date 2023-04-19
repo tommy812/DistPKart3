@@ -11,6 +11,11 @@ import java.io.IOException;
 import java.net.*;
 import java.util.ArrayList;
 import java.util.List;
+///////////////////////////////////////////
+//
+//  Sid: 1955004
+//
+///////////////////////////////////////////
 
 public class GameServer extends Thread  {
 
@@ -19,8 +24,8 @@ public class GameServer extends Thread  {
 
     private int socket_port = 5000;
 
-    private int nConnections=0;
 
+    private int nConnections=0;
 
     private List<CarMP> connectedPlayers = new ArrayList<CarMP>();
 
@@ -132,6 +137,7 @@ public class GameServer extends Thread  {
         packet.writeData(this);
     }
 
+    //check if the player is connected to server
     public CarMP getCarMP(int pNum){
         for(CarMP player: this.connectedPlayers){
             if (player.getpNum() == pNum){
@@ -141,6 +147,7 @@ public class GameServer extends Thread  {
         return null;
     }
 
+    //check the index of the player in the list of users
     public int getCarMPIndex(int pNum){
         int index=0;
         for(CarMP player: this.connectedPlayers){

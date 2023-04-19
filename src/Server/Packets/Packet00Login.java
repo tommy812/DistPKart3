@@ -2,6 +2,11 @@ package Server.Packets;
 
 import Server.GameClient;
 import Server.GameServer;
+///////////////////////////////////////////
+//
+//  Sid: 1955004
+//
+///////////////////////////////////////////
 
 public class Packet00Login extends Packet{
     private int pNum;

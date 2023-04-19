@@ -1,7 +1,14 @@
 package Server.Packets;
 
+///////////////////////////////////////////
+//
+//  Sid: 1955004
+//
+///////////////////////////////////////////
 import Server.GameClient;
 import Server.GameServer;
+
+//footprint for packets
 
 public abstract class Packet {
     public static enum PacketTypes{
